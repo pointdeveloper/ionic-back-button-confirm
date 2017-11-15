@@ -10,13 +10,15 @@ import { AlertController } from 'ionic-angular';
 })
 export class MyApp {
   rootPage: any = TabsPage;
-
+  public alertShown:boolean = false;
   constructor(public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public alertCtrl: AlertController) {
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
       platform.registerBackButtonAction(() => {
-        this.presentConfirm();
+        if (this.alertShown==false) {
+          this.presentConfirm();  
+        }
       }, 0)
     });
   }
@@ -31,6 +33,7 @@ export class MyApp {
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
+            this.alertShown=false;
           }
         },
         {
@@ -42,6 +45,9 @@ export class MyApp {
         }
       ]
     });
-    alert.present();
+    alert.present().then(()=>{
+      this.alertShown=true;
+    });
+      
   }
 }
